@@ -87,6 +87,16 @@
     font-weight: bold;
 }
 
+.example {
+    border-left: 10px solid #1b1b1b;
+    padding-left: 10px;
+}
+
+#error {
+    margin-top: 20px;
+    align-self: center;
+}
+
 /* ========================== VARIABLES ======================================= */
 /*:root {
     --primary-color: #BED754;

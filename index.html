@@ -9,28 +9,16 @@
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
     </head>
     <body>
+        <audio id="sound"></audio>
         <div class="container">
             <div class="dictionary">
                 <div class="searchbar">
-                    <input type="text" placeholder="Type here ...">
+                    <input id="inputWord" type="text" placeholder="Type here ...">
                     <button class="searchbtn">
                         <i class="bi bi-search"></i>
                     </button>
                 </div>
-                <div class="resultpanel">
-                    <div class="word">
-                        <h1 >word</h1>
-                        <button class="soundbtn">
-                            <i class="bi bi-volume-up-fill"></i>
-                        </button>
-                    </div>
-                    <div class="details">
-                        <p>partOfSpeech</p>
-                        <p>/phonetics/</p>
-                    </div>
-                    <div class="meaning"><p>meaning</p></div>
-                    <div class="example">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Provident voluptatibus, dolor eligendi fuga harum molestias laborum libero. Laboriosam saepe aliquid mollitia, explicabo, similique quisquam minima autem, illum voluptatem rem deserunt.</div>   
-                </div>
+                <div class="resultpanel"></div>
             </div>
         </div>
         <script src="dictionary.js"></script>
