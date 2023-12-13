@@ -39,7 +39,7 @@ btnSearch.addEventListener("click", () => {
                console.log(sound);
           })
           .catch(() => {
-               resultPanel.innerHTML = `<h2 id="error">Nothing found</h2>`;
+               resultPanel.innerHTML = `<h2 id="error">WORD NOT FOUND</h2>`;
           });
 });
 
