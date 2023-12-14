@@ -4,6 +4,7 @@ let input = document.getElementById("inputWord");
 let btnSearch = document.querySelector(".searchbtn");
 let soundElement = document.getElementById("sound");
 let resultPanel = document.querySelector(".resultpanel");
+let resultCarousel = document.querySelector(".resultcarousel");
 
 input.addEventListener("keypress", (e) => {
      if (e.key === "Enter") {
@@ -30,13 +31,18 @@ btnSearch.addEventListener("click", () => {
                let meanings = buildMeanings(data);
                console.log(meanings);
 
+               /*let sections = buildSections(meanings);
+               console.log(meanings);*/
+
                resultPanel.innerHTML = `
                     <div class="word">
-                        <h1 id="word">${word}</h1>
-                        <button class="soundbtn" onclick="playAudio()">
-                            <i class="bi bi-volume-up-fill"></i>
-                        </button>
-                    </div>
+                         <h1 id="word">${word}</h1>
+                         <button class="soundbtn" onclick="playAudio()">
+                         <i class="bi bi-volume-up-fill"></i>
+                         </button>
+                    </div>`;
+
+               resultCarousel.innerHTML = `
                     <div class="details">
                         <p id="pos">${meaning.partOfSpeech || ""}</p>
                         <p id="phonetics">${phonetics || ""}</p>
@@ -48,7 +54,7 @@ btnSearch.addEventListener("click", () => {
                soundElement.setAttribute("src", `${sound}`);
           })
           .catch(() => {
-               resultPanel.innerHTML = `<h2 id="error">WORD NOT FOUND</h2>`;
+               resultCarousel.innerHTML = `<h2 id="error">WORD NOT FOUND</h2>`;
           });
 });
 
