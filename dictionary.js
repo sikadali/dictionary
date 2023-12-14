@@ -1,12 +1,20 @@
 const url = "https://api.dictionaryapi.dev/api/v2/entries/en/";
 
+let input = document.getElementById("inputWord");
 let btnSearch = document.querySelector(".searchbtn");
 let btnSound = document.querySelector(".soundbtn");
 let soundElement = document.getElementById("sound");
 let resultPanel = document.querySelector(".resultpanel");
 
+input.addEventListener("keypress", (e) => {
+     if (e.key === "Enter") {
+          e.preventDefault();
+          btnSearch.click();
+     }
+});
+
 btnSearch.addEventListener("click", () => {
-     let inputWord = document.getElementById("inputWord").value;
+     let inputWord = input.value;
 
      console.log(inputWord);
      fetch(`${url}${inputWord}`)
