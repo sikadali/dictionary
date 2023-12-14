@@ -27,6 +27,9 @@ btnSearch.addEventListener("click", () => {
 
                let meaning = buildMeaning(data);
 
+               let meanings = buildMeanings(data);
+               console.log(meanings);
+
                resultPanel.innerHTML = `
                     <div class="word">
                         <h1 id="word">${word}</h1>
@@ -90,4 +93,16 @@ function buildMeaning(data) {
      let meaning = data[0].meanings[0].definitions[0].definition;
      let example = data[0].meanings[0].definitions[0].example;
      return new Meaning(partOfSpeech, meaning, example);
+}
+
+function buildMeanings(data) {
+     let result = [];
+     data.forEach((item) => {
+          item.meanings.forEach((meaning) => {
+               meaning.definitions.forEach((definition) => {
+                    result.push(new Meaning(meaning.partOfSpeech, definition.definition, definition.example));
+               });
+          });
+     });
+     return result;
 }
