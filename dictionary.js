@@ -2,7 +2,6 @@ const url = "https://api.dictionaryapi.dev/api/v2/entries/en/";
 
 let input = document.getElementById("inputWord");
 let btnSearch = document.querySelector(".searchbtn");
-let btnSound = document.querySelector(".soundbtn");
 let soundElement = document.getElementById("sound");
 let resultPanel = document.querySelector(".resultpanel");
 
@@ -26,9 +25,7 @@ btnSearch.addEventListener("click", () => {
                let phonetics = getPhonetics(data);
                let sound = getAudio(data);
 
-               let partOfSpeech = data[0].meanings[0].partOfSpeech;
-               let meaning = data[0].meanings[0].definitions[0].definition;
-               let example = data[0].meanings[0].definitions[0].example;
+               let meaning = buildMeaning(data);
 
                resultPanel.innerHTML = `
                     <div class="word">
@@ -38,15 +35,14 @@ btnSearch.addEventListener("click", () => {
                         </button>
                     </div>
                     <div class="details">
-                        <p id="pos">${partOfSpeech || ""}</p>
+                        <p id="pos">${meaning.partOfSpeech || ""}</p>
                         <p id="phonetics">${phonetics || ""}</p>
                     </div>
-                    <div id="meaning" class="meaning"><p>${meaning}</p></div>
-                    <div id="example" class="example">${example || ""}</div>   
+                    <div id="meaning" class="meaning"><p>${meaning.meaning}</p></div>
+                    <div id="example" class="example">${meaning.example || ""}</div>   
             `;
 
                soundElement.setAttribute("src", `${sound}`);
-               console.log(sound);
           })
           .catch(() => {
                resultPanel.innerHTML = `<h2 id="error">WORD NOT FOUND</h2>`;
@@ -62,9 +58,7 @@ function getAudio(data) {
 function getPhonetics(data) {
      let result = loopSearch(data, "phonetic");
      if (!result) {
-          for (let item of data) {
-               result = loopSearch(item.phonetics, "text");
-          }
+          data.forEach((item) => (result = loopSearch(item.phonetics, "text")));
      }
      return result;
 }
@@ -81,4 +75,19 @@ function loopSearch(array, keyPropName) {
 
 function playAudio() {
      soundElement.play();
+}
+
+class Meaning {
+     constructor(partOfSpeech, meaning, example) {
+          this.partOfSpeech = partOfSpeech;
+          this.meaning = meaning;
+          this.example = example;
+     }
+}
+
+function buildMeaning(data) {
+     let partOfSpeech = data[0].meanings[0].partOfSpeech;
+     let meaning = data[0].meanings[0].definitions[0].definition;
+     let example = data[0].meanings[0].definitions[0].example;
+     return new Meaning(partOfSpeech, meaning, example);
 }

@@ -50,6 +50,20 @@
     padding: 15px;
 }
 
+#searchbtn{
+    outline: 0;
+    border: 0;
+    background: var(--bg-color);
+    color: var(--secondary-color);
+    flex-grow: 1;
+    padding: 15px;
+}
+
+#searchbtn:hover {
+    background: var(--secondary-color);
+    color: var(--bg-color);
+}
+
 .resultpanel {
     display: flex;
     flex-direction: column;
