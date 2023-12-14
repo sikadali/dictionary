@@ -21,12 +21,14 @@ btnSearch.addEventListener("click", () => {
           .then((response) => response.json())
           .then((data) => {
                console.log(data);
+
                let word = data[0].word;
-               let phonetics = data[0].phonetic;
+               let phonetics = getPhonetics(data);
+               let sound = getAudio(data);
+
                let partOfSpeech = data[0].meanings[0].partOfSpeech;
                let meaning = data[0].meanings[0].definitions[0].definition;
                let example = data[0].meanings[0].definitions[0].example;
-               let sound = data[0].phonetics[0].audio;
 
                resultPanel.innerHTML = `
                     <div class="word">
@@ -50,6 +52,32 @@ btnSearch.addEventListener("click", () => {
                resultPanel.innerHTML = `<h2 id="error">WORD NOT FOUND</h2>`;
           });
 });
+
+function getAudio(data) {
+     for (let item of data) {
+          return loopSearch(item.phonetics, "audio");
+     }
+}
+
+function getPhonetics(data) {
+     let result = loopSearch(data, "phonetic");
+     if (!result) {
+          for (let item of data) {
+               result = loopSearch(item.phonetics, "text");
+          }
+     }
+     return result;
+}
+
+function loopSearch(array, keyPropName) {
+     let counter = 0;
+     while (counter < array.length) {
+          if (array[counter][keyPropName]) {
+               return array[counter][keyPropName];
+          }
+          counter++;
+     }
+}
 
 function playAudio() {
      soundElement.play();
