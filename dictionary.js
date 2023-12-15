@@ -110,7 +110,10 @@ btnSearch.addEventListener("click", () => {
                          </span>
                     </div>
                 `;
-               soundElement.setAttribute("src", `${sound}`);
+               if (sound) {
+                    soundElement.setAttribute("src", `${sound}`);
+               }
+
                buildCarousel();
 
                errorMsg.innerHTML = "";
@@ -147,7 +150,11 @@ function loopSearch(array, keyPropName) {
 }
 
 function playAudio() {
-     soundElement.play();
+     if (!soundElement.getAttribute("src")) {
+          alert("No sound found for this word.");
+     } else {
+          soundElement.play();
+     }
 }
 
 class Meaning {
