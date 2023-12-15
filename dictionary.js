@@ -1,10 +1,9 @@
 const url = "https://api.dictionaryapi.dev/api/v2/entries/en/";
 
-let input = document.getElementById("inputWord");
-let btnSearch = document.querySelector(".searchbtn");
-let soundElement = document.getElementById("sound");
-let resultPanel = document.querySelector(".resultpanel");
-let resultCarousel = document.querySelector(".resultcarousel");
+const input = document.getElementById("inputWord");
+const btnSearch = document.querySelector(".searchbtn");
+const soundElement = document.getElementById("sound");
+const resultPanel = document.querySelector(".resultpanel");
 
 input.addEventListener("keypress", (e) => {
      if (e.key === "Enter") {
@@ -26,35 +25,38 @@ btnSearch.addEventListener("click", () => {
                let phonetics = getPhonetics(data);
                let sound = getAudio(data);
 
-               let meaning = buildMeaning(data);
-
                let meanings = buildMeanings(data);
                console.log(meanings);
 
-               /*let sections = buildSections(meanings);
-               console.log(meanings);*/
+               let sections = buildSections(meanings, phonetics);
+               console.log(sections);
 
                resultPanel.innerHTML = `
                     <div class="word">
                          <h1 id="word">${word}</h1>
                          <button class="soundbtn" onclick="playAudio()">
-                         <i class="bi bi-volume-up-fill"></i>
+                              <i class="bi bi-volume-up-fill"></i>
                          </button>
                     </div>`;
 
-               resultCarousel.innerHTML = `
-                    <div class="details">
-                        <p id="pos">${meaning.partOfSpeech || ""}</p>
-                        <p id="phonetics">${phonetics || ""}</p>
+               carousel.innerHTML = `
+                    <div class="slider">
+                        ${sections}
                     </div>
-                    <div id="meaning" class="meaning"><p>${meaning.meaning}</p></div>
-                    <div id="example" class="example">${meaning.example || ""}</div>   
-            `;
+                    <div class="controls">
+                         <span class="arrow left">
+                              <span class="material-symbols-outlined">arrow_back_ios</span>
+                         </span>
+                         <span class="arrow right">
+                              <span class="material-symbols-outlined">arrow_forward_ios</span>
+                         </span>
+                    </div>
+                `;
 
                soundElement.setAttribute("src", `${sound}`);
           })
           .catch(() => {
-               resultCarousel.innerHTML = `<h2 id="error">WORD NOT FOUND</h2>`;
+               carousel.innerHTML = `<h2 id="error">WORD NOT FOUND</h2>`;
           });
 });
 
@@ -94,13 +96,6 @@ class Meaning {
      }
 }
 
-function buildMeaning(data) {
-     let partOfSpeech = data[0].meanings[0].partOfSpeech;
-     let meaning = data[0].meanings[0].definitions[0].definition;
-     let example = data[0].meanings[0].definitions[0].example;
-     return new Meaning(partOfSpeech, meaning, example);
-}
-
 function buildMeanings(data) {
      let result = [];
      data.forEach((item) => {
@@ -112,3 +107,71 @@ function buildMeanings(data) {
      });
      return result;
 }
+
+function buildSections(meanings, phonetics) {
+     let result = [];
+     meanings.forEach((meaning) => {
+          result.push(
+               `<section>
+                    <div class="details">
+                         <p id="pos">${meaning.partOfSpeech || ""}</p>
+                         <p id="phonetics">${phonetics || ""}</p>
+                    </div>
+                    <div id="meaning" class="meaning"><p>${meaning.meaning}</p></div>
+                    <div id="example" class="example">${meaning.example || ""}</div>  
+               </section>`
+          );
+     });
+     return result.join("\n");
+}
+
+// ================================ CAROUSEL ================================
+const carousel = document.querySelector(".carousel");
+const slider = document.querySelector(".slider");
+
+const prev = document.querySelector(".prev");
+const next = document.querySelector(".next");
+
+const sections = document.querySelectorAll("section");
+const sectionsLength = sections.length;
+
+// Dynamically set slider and sections dimensions to have a good carousel effect
+slider.style.width = `${sectionsLength * 100}%`;
+sections.forEach((section) => {
+     section.style.width = `${100 / sectionsLength}%`;
+     section.style.flexBasis = `${100 / sectionsLength}%`;
+});
+
+let direction = -1;
+
+prev.addEventListener("click", () => {
+     if (direction === -1) {
+          slider.appendChild(slider.firstElementChild);
+          direction = 1;
+     }
+     carousel.style.justifyContent = "flex-end";
+     slider.style.transform = "translate(20%)";
+});
+
+next.addEventListener("click", () => {
+     if (direction === 1) {
+          slider.prepend(slider.lastElementChild);
+          carousel.style.justifyContent = "flex-start";
+          direction = -1;
+     }
+     slider.style.transform = "translate(-20%)";
+});
+
+slider.addEventListener("transitionend", () => {
+     if (direction === -1) {
+          slider.appendChild(slider.firstElementChild);
+     } else {
+          slider.prepend(slider.lastElementChild);
+     }
+
+     slider.style.transition = "none";
+     slider.style.transform = "translate(0%)";
+     setTimeout(() => {
+          slider.style.transition = "all 0.5s";
+     });
+});

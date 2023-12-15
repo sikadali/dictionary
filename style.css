@@ -65,15 +65,65 @@
 }
 
 .resultpanel {
-    padding: 20px;
+    padding: 10px 20px 10px 20px;
 }
 
-.resultcarousel {
+.carousel {
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    
+}
+
+.slider{
+    display: flex;
+    flex-shrink: 0;
+    height: 100%;
+    transition: all 0.5s;
+}
+
+.slider section{
+    flex-shrink: 0;
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 15px;
     padding: 0px 20px 20px 20px;
+    gap: 5px;
 }
+
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+.arrow span {
+    font-size: 15px;
+}
+
+.arrow.prev {
+    left: 0px;
+}
+
+.arrow.next {
+    right: 0px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .word {
     display: flex;
