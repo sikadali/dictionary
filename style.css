@@ -73,6 +73,7 @@
     position: relative;
     display: flex;
     justify-content: flex-start;
+    overflow: hidden;
 }
 
 .slider{

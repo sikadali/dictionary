@@ -4,10 +4,10 @@ const input = document.getElementById("inputWord");
 const btnSearch = document.querySelector(".searchbtn");
 const soundElement = document.getElementById("sound");
 const resultPanel = document.querySelector(".resultpanel");
+const carousel = document.querySelector(".carousel");
 
 function buildCarousel() {
      // ================================ CAROUSEL ================================
-     const carousel = document.querySelector(".carousel");
      const slider = document.querySelector(".slider");
 
      const prev = document.querySelector(".prev");
@@ -73,8 +73,6 @@ btnSearch.addEventListener("click", () => {
      fetch(`${url}${inputWord}`)
           .then((response) => response.json())
           .then((data) => {
-               buildCarousel();
-
                console.log(data);
 
                let word = data[0].word;
@@ -100,16 +98,16 @@ btnSearch.addEventListener("click", () => {
                         ${sections}
                     </div>
                     <div class="controls">
-                         <span class="arrow left">
+                         <span class="arrow prev">
                               <span class="material-symbols-outlined">arrow_back_ios</span>
                          </span>
-                         <span class="arrow right">
+                         <span class="arrow next">
                               <span class="material-symbols-outlined">arrow_forward_ios</span>
                          </span>
                     </div>
                 `;
-
                soundElement.setAttribute("src", `${sound}`);
+               buildCarousel();
           })
           .catch(() => {
                carousel.innerHTML = `<h2 id="error">WORD NOT FOUND</h2>`;
