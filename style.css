@@ -13,6 +13,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
 }
 
 .dictionary {
@@ -150,6 +151,11 @@
 #error {
     margin-top: 20px;
     align-self: center;
+}
+
+.errormsg {
+    color: var(--primary-color);
+    margin: 20px;
 }
 
 /* ========================== VARIABLES ======================================= */

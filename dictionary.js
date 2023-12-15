@@ -5,6 +5,7 @@ const btnSearch = document.querySelector(".searchbtn");
 const soundElement = document.getElementById("sound");
 const resultPanel = document.querySelector(".resultpanel");
 const carousel = document.querySelector(".carousel");
+const errorMsg = document.querySelector(".errormsg");
 
 function buildCarousel() {
      // ================================ CAROUSEL ================================
@@ -111,9 +112,13 @@ btnSearch.addEventListener("click", () => {
                 `;
                soundElement.setAttribute("src", `${sound}`);
                buildCarousel();
+
+               errorMsg.innerHTML = "";
           })
           .catch(() => {
-               carousel.innerHTML = `<h2 id="error">WORD NOT FOUND</h2>`;
+               resultPanel.innerHTML = "";
+               carousel.innerHTML = "";
+               errorMsg.innerHTML = `<h2 id="error">WORD NOT FOUND</h2>`;
           });
 });
 
