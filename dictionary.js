@@ -5,6 +5,60 @@ const btnSearch = document.querySelector(".searchbtn");
 const soundElement = document.getElementById("sound");
 const resultPanel = document.querySelector(".resultpanel");
 
+function buildCarousel() {
+     // ================================ CAROUSEL ================================
+     const carousel = document.querySelector(".carousel");
+     const slider = document.querySelector(".slider");
+
+     const prev = document.querySelector(".prev");
+     const next = document.querySelector(".next");
+
+     const sections = document.querySelectorAll("section");
+     const sectionsLength = sections.length;
+
+     // Dynamically set slider and sections dimensions to have a good carousel effect
+     slider.style.width = `${sectionsLength * 100}%`;
+     sections.forEach((section) => {
+          section.style.width = `${100 / sectionsLength}%`;
+          section.style.flexBasis = `${100 / sectionsLength}%`;
+     });
+
+     let direction = -1;
+
+     prev.addEventListener("click", () => {
+          if (direction === -1) {
+               slider.appendChild(slider.firstElementChild);
+               direction = 1;
+          }
+          carousel.style.justifyContent = "flex-end";
+          slider.style.transform = "translate(20%)";
+     });
+
+     next.addEventListener("click", () => {
+          if (direction === 1) {
+               slider.prepend(slider.lastElementChild);
+               carousel.style.justifyContent = "flex-start";
+               direction = -1;
+          }
+          slider.style.transform = "translate(-20%)";
+     });
+
+     slider.addEventListener("transitionend", () => {
+          if (direction === -1) {
+               slider.appendChild(slider.firstElementChild);
+          } else {
+               slider.prepend(slider.lastElementChild);
+          }
+
+          slider.style.transition = "none";
+          slider.style.transform = "translate(0%)";
+          setTimeout(() => {
+               slider.style.transition = "all 0.5s";
+          });
+     });
+     // ================================ CAROUSEL ================================
+}
+
 input.addEventListener("keypress", (e) => {
      if (e.key === "Enter") {
           e.preventDefault();
@@ -19,6 +73,8 @@ btnSearch.addEventListener("click", () => {
      fetch(`${url}${inputWord}`)
           .then((response) => response.json())
           .then((data) => {
+               buildCarousel();
+
                console.log(data);
 
                let word = data[0].word;
@@ -124,54 +180,3 @@ function buildSections(meanings, phonetics) {
      });
      return result.join("\n");
 }
-
-// ================================ CAROUSEL ================================
-const carousel = document.querySelector(".carousel");
-const slider = document.querySelector(".slider");
-
-const prev = document.querySelector(".prev");
-const next = document.querySelector(".next");
-
-const sections = document.querySelectorAll("section");
-const sectionsLength = sections.length;
-
-// Dynamically set slider and sections dimensions to have a good carousel effect
-slider.style.width = `${sectionsLength * 100}%`;
-sections.forEach((section) => {
-     section.style.width = `${100 / sectionsLength}%`;
-     section.style.flexBasis = `${100 / sectionsLength}%`;
-});
-
-let direction = -1;
-
-prev.addEventListener("click", () => {
-     if (direction === -1) {
-          slider.appendChild(slider.firstElementChild);
-          direction = 1;
-     }
-     carousel.style.justifyContent = "flex-end";
-     slider.style.transform = "translate(20%)";
-});
-
-next.addEventListener("click", () => {
-     if (direction === 1) {
-          slider.prepend(slider.lastElementChild);
-          carousel.style.justifyContent = "flex-start";
-          direction = -1;
-     }
-     slider.style.transform = "translate(-20%)";
-});
-
-slider.addEventListener("transitionend", () => {
-     if (direction === -1) {
-          slider.appendChild(slider.firstElementChild);
-     } else {
-          slider.prepend(slider.lastElementChild);
-     }
-
-     slider.style.transition = "none";
-     slider.style.transform = "translate(0%)";
-     setTimeout(() => {
-          slider.style.transition = "all 0.5s";
-     });
-});
