@@ -16,11 +16,14 @@ function buildCarousel() {
      const sections = document.querySelectorAll("section");
      const sectionsLength = sections.length;
 
+     const widthSlider = sectionsLength * 100;
+     const widthSections = 100 / sectionsLength;
+
      // Dynamically set slider and sections dimensions to have a good carousel effect
-     slider.style.width = `${sectionsLength * 100}%`;
+     slider.style.width = `${widthSlider}%`;
      sections.forEach((section) => {
-          section.style.width = `${100 / sectionsLength}%`;
-          section.style.flexBasis = `${100 / sectionsLength}%`;
+          section.style.width = `${widthSections}%`;
+          section.style.flexBasis = `${widthSections}%`;
      });
 
      let direction = -1;
@@ -31,7 +34,7 @@ function buildCarousel() {
                direction = 1;
           }
           carousel.style.justifyContent = "flex-end";
-          slider.style.transform = "translate(20%)";
+          slider.style.transform = `translate(${widthSections}%)`;
      });
 
      next.addEventListener("click", () => {
@@ -40,7 +43,7 @@ function buildCarousel() {
                carousel.style.justifyContent = "flex-start";
                direction = -1;
           }
-          slider.style.transform = "translate(-20%)";
+          slider.style.transform = `translate(-${widthSections}%)`;
      });
 
      slider.addEventListener("transitionend", () => {
@@ -165,16 +168,21 @@ function buildMeanings(data) {
 function buildSections(meanings, phonetics) {
      let result = [];
      meanings.forEach((meaning) => {
-          result.push(
-               `<section>
-                    <div class="details">
-                         <p id="pos">${meaning.partOfSpeech || ""}</p>
-                         <p id="phonetics">${phonetics || ""}</p>
-                    </div>
-                    <div id="meaning" class="meaning"><p>${meaning.meaning}</p></div>
-                    <div id="example" class="example">${meaning.example || ""}</div>  
-               </section>`
-          );
+          let innerHTML = `
+          <section>
+               <div class="details">
+                    <p id="pos">${meaning.partOfSpeech || ""}</p>
+                    <p id="phonetics">${phonetics || ""}</p>
+               </div>
+               <div id="meaning" class="meaning"><p>${meaning.meaning}</p></div>`;
+
+          if (meaning.example) {
+               innerHTML += `<div id="example" class="example">${meaning.example}</div>`;
+          }
+
+          innerHTML += `</section>`;
+
+          result.push(innerHTML);
      });
      return result.join("\n");
 }

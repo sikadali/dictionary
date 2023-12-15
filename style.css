@@ -80,7 +80,7 @@
     display: flex;
     flex-shrink: 0;
     height: 100%;
-    transition: all 0.5s;
+    transition: all 0.5s;    
 }
 
 .slider section{
@@ -91,6 +91,8 @@
     padding: 0px 20px 20px 20px;
     gap: 5px;
 }
+
+.slider section > * {   flex: 1; }
 
 .arrow {
     position: absolute;
@@ -109,21 +111,6 @@
 .arrow.next {
     right: 0px;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .word {
     display: flex;
@@ -156,7 +143,7 @@
 }
 
 .example {
-    border-left: 10px solid #1b1b1b;
+    border-left: 10px solid var(--secondary-color);
     padding-left: 10px;
 }
 
