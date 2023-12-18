@@ -77,17 +77,12 @@ btnSearch.addEventListener("click", () => {
      fetch(`${url}${inputWord}`)
           .then((response) => response.json())
           .then((data) => {
-               console.log(data);
-
                let word = data[0].word;
                let phonetics = getPhonetics(data);
                let sound = getAudio(data);
 
                let meanings = buildMeanings(data);
-               console.log(meanings);
-
                let sections = buildSections(meanings, phonetics);
-               console.log(sections);
 
                resultPanel.innerHTML = `
                     <div class="word">
@@ -110,6 +105,7 @@ btnSearch.addEventListener("click", () => {
                          </span>
                     </div>
                 `;
+               soundElement.setAttribute("src", "");
                if (sound) {
                     soundElement.setAttribute("src", `${sound}`);
                }
